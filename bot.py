@@ -1,18 +1,32 @@
 from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
-import os
+from telegram.ext import Application, CommandHandler, ContextTypes
+from flask import Flask
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    await update.message.reply_text("Hello! I am your bot. How can I assist you today?")
+# Initialize Flask app
+app = Flask(__name__)
+
+# Bot token from Koyeb environment variable
+import os
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+
+# Telegram bot setup
+async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Hello! I am your bot. How can I assist you?")
 
 def main():
-    token = os.getenv("YOUR_BOT_TOKEN")
-    app = ApplicationBuilder().token(token).build()
+    application = Application.builder().token(BOT_TOKEN).build()
+    application.add_handler(CommandHandler("start", start_command))
 
-    app.add_handler(CommandHandler("start", start))
+    # Run polling in a separate thread
+    import threading
+    bot_thread = threading.Thread(target=application.run_polling)
+    bot_thread.start()
 
-    app.run_polling()
+# Flask route to keep it running on port 8000
+@app.route("/")
+def home():
+    return "Bot is running"
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-    
+    app.run(host="0.0.0.0", port=8000)
