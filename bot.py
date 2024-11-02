@@ -22,7 +22,7 @@ async def run_bot():
     # Run the bot until manually stopped
     await application.run_polling()
 
-# Flask route to keep it running on port 8000
+# Flask route to keep it running on port 8080
 @app.route("/")
 def home():
     return "Bot is running"
@@ -33,5 +33,5 @@ if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     loop.create_task(run_bot())
 
-    # Start the Flask app on port 8000
-    app.run(host="0.0.0.0", port=8000)
+    # Start the Flask app on port 8080
+    app.run(host="0.0.0.0", port=8080)
