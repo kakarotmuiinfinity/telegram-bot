@@ -29,9 +29,13 @@ def home():
 
 # Main entry point
 if __name__ == "__main__":
-    # Use get_running_loop instead of get_event_loop
-    loop = asyncio.get_running_loop()
+    # Create and set a new event loop if one does not exist
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    
+    # Schedule the bot to run in the created event loop
     loop.create_task(run_bot())
 
-    # Start the Flask app on port 8000
+    # Run the Flask app on port 8000
     app.run(host="0.0.0.0", port=8000)
+    
