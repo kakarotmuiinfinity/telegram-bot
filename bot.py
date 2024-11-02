@@ -22,7 +22,7 @@ async def run_bot():
     # Run the bot until manually stopped
     await application.run_polling()
 
-# Flask route to keep it running on port 8000
+# Flask route to keep it running on port 8080
 @app.route("/")
 def home():
     return "Bot is running"
@@ -36,6 +36,6 @@ if __name__ == "__main__":
     # Schedule the bot to run in the created event loop
     loop.create_task(run_bot())
 
-    # Run the Flask app on port 8000
-    app.run(host="0.0.0.0", port=8000)
+    # Run the Flask app on port 8080 (required by Koyeb)
+    app.run(host="0.0.0.0", port=8080)
     
